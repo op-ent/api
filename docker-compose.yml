@@ -1,10 +1,10 @@
 version: '3.9'
 services:
   postgres:
-    container_name: op_ent_db
+    container_name: postgres
     image: postgres:alpine
     volumes:
-      - op_ent_db:/var/lib/postgresql/data
+      - postgres_volume:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: 'op_ent'
       POSTGRES_USER: 'op_ent'
@@ -13,15 +13,15 @@ services:
       - 5432:5432
 
   redis:
-    container_name: op_ent_redis
+    container_name: redis
     image: redis:alpine
     volumes:
-      - op_ent_redis:/data
+      - redis_volume:/data
     ports:
       - 6379:6379
 
   adonis:
-    container_name: op_ent_web
+    container_name: adonis
     restart: always
     depends_on:
       - postgres
@@ -40,5 +40,5 @@ services:
         target: /app
     command: dumb-init node ace serve --watch
 volumes:
-  op_ent_db:
-  op_ent_redis:
+  postgres_volume:
+  redis_volume:
