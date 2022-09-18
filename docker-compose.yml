@@ -35,7 +35,9 @@ services:
       - PG_HOST=postgres
       - REDIS_HOST=redis
     volumes:
-      - ./:/app
+      - type: bind
+        source: ./
+        target: /app
     command: dumb-init node ace serve --watch
 volumes:
   op_ent_db:
