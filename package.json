@@ -7,7 +7,10 @@
     "build": "node ace build --production",
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dockerAttach": "docker exec -it adonis /bin/sh",
+    "dockerAttachRedis": "docker exec -it redis /bin/sh",
+    "dockerAttachPostgres": "docker exec -it postgres /bin/sh"
   },
   "eslintConfig": {
     "extends": [
