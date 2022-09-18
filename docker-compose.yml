@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: op_ent_db
+    image: postgres:alpine
+    volumes:
+      - op_ent_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: 'op_ent'
+      POSTGRES_USER: 'op_ent'
+      POSTGRES_PASSWORD: 'Mic0rk5en!sCool'
+    ports:
+      - 5432:5432
+
+  redis:
+    container_name: op_ent_redis
+    image: redis:alpine
+    volumes:
+      - op_ent_redis:/data
+    ports:
+      - 6379:6379
+
+  adonis:
+    container_name: op_ent_web
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    image: 'lucasrgoes/adonis'
+    ports:
+      - 3333:3333
+    env_file:
+      - .env
+    environment:
+      - PG_HOST=postgres
+      - REDIS_HOST=redis
+    volumes:
+      - ./:/app
+    command: dumb-init node ace serve --watch
+volumes:
+  op_ent_db:
+  op_ent_redis:
