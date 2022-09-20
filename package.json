@@ -8,9 +8,11 @@
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "dockerAttach": "docker exec -it adonis /bin/sh",
-    "dockerAttachRedis": "docker exec -it redis /bin/sh",
-    "dockerAttachPostgres": "docker exec -it postgres /bin/sh"
+    "docker:attach": "docker exec -it adonis /bin/sh",
+    "docke:attach:redis": "docker exec -it redis /bin/sh",
+    "docker:attach:postgres": "docker exec -it postgres /bin/sh",
+    "docker:prod": "docker-compose up",
+    "docker:dev": "docker-compose -f docker-compose.development.yml up"
   },
   "eslintConfig": {
     "extends": [
