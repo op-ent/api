@@ -1,10 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AppConsumer from 'App/Models/AppConsumer'
+import Access from 'App/Models/Access'
 import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 import { string } from '@ioc:Adonis/Core/Helpers'
 
-export default class AppConsumersController {
-  private async _validateAppConsumer({ auth, params }: HttpContextContract) {
+export default class AccessesController {
+  private async _validateAccess({ auth, params }: HttpContextContract) {
     await validator.validate({
       schema: schema.create({ id: schema.number() }),
       data: {
@@ -12,15 +12,15 @@ export default class AppConsumersController {
       },
     })
 
-    const appConsumer = await AppConsumer.findOrFail(params.id)
-    if (appConsumer.user_id !== auth.user!.id) {
+    const access = await Access.findOrFail(params.id)
+    if (access.user_id !== auth.user!.id) {
       throw new Error('You are not allowed to access this app consumer')
     }
-    return appConsumer
+    return access
   }
 
   public async index({ auth }: HttpContextContract) {
-    return await AppConsumer.query().where('user_id', auth.user!.id)
+    return await Access.query().where('user_id', auth.user!.id)
   }
 
   public async store({ request, auth }: HttpContextContract) {
@@ -34,7 +34,7 @@ export default class AppConsumersController {
     const useToken = payload.type === 'token'
     const user = auth.user!
 
-    return await user.related('appConsumers').create({
+    return await user.related('accesses').create({
       type: payload.type,
       domains: useToken ? undefined : payload.domains,
       token: useToken ? string.generateRandom(64) : undefined,
@@ -42,7 +42,7 @@ export default class AppConsumersController {
   }
 
   public async show(ctx: HttpContextContract) {
-    return await this._validateAppConsumer(ctx)
+    return await this._validateAccess(ctx)
   }
 
   public async update(ctx: HttpContextContract) {
@@ -59,19 +59,19 @@ export default class AppConsumersController {
       },
     })
 
-    const appConsumer = await this._validateAppConsumer(ctx)
-    if (appConsumer.type !== 'web') {
+    const access = await this._validateAccess(ctx)
+    if (access.type !== 'web') {
       throw new Error(error)
     }
 
-    await appConsumer.merge({ domains: payload.domains }).save()
-    return appConsumer
+    await access.merge({ domains: payload.domains }).save()
+    return access
   }
 
   public async destroy(ctx: HttpContextContract) {
-    const appConsumer = await this._validateAppConsumer(ctx)
-    const _ = appConsumer
-    await appConsumer.delete()
-    return _
+    const access = await this._validateAccess(ctx)
+    const temp = access
+    await access.delete()
+    return temp
   }
 }

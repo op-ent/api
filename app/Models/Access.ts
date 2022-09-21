@@ -5,7 +5,7 @@ import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 
 export type AccessType = 'token' | 'web'
 
-export default class AppConsumer extends BaseModel {
+export default class Access extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 

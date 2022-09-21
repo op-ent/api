@@ -31,7 +31,7 @@ Route.group(() => {
   }).prefix('/auth')
 
   Route.group(() => {
-    Route.resource('app-consumers', 'AppConsumersController').apiOnly()
+    Route.resource('accesses', 'AccessesController').apiOnly()
   })
     .prefix('/developers')
     .middleware(['auth', 'role:developer'])

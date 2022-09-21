@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import Encryption from '@ioc:Adonis/Core/Encryption'
-import AppConsumer from 'App/Models/AppConsumer'
+import Access from 'App/Models/Access'
 
 export type UserRole = 'admin' | 'user' | 'developer'
 
@@ -10,10 +9,7 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column({
-    prepare: (value: string) => Encryption.encrypt(value),
-    consume: (value: string) => Encryption.decrypt(value),
-  })
+  @column()
   public email: string
 
   @column({ serializeAs: null })
@@ -32,10 +28,10 @@ export default class User extends BaseModel {
     prepare: (value: string[]): string => `{${value.join(',')}}`,
     consume: (value: string): string[] => value.slice(1, -1).split(','),
   })
-  public role: UserRole[]
+  public roles: UserRole[]
 
-  @hasMany(() => AppConsumer, { foreignKey: 'user_id' })
-  public appConsumers: HasMany<typeof AppConsumer>
+  @hasMany(() => Access, { foreignKey: 'user_id' })
+  public accesses: HasMany<typeof Access>
 
   @beforeSave()
   public static async hashPassword(user: User) {
