@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "opent",
+      "Group": "Servers",
+      "Host": "pgsql-server",
+      "Port": 5432,
+      "MaintenanceDB": "postgres",
+      "Username": "lucid",
+      "SSLMode": "prefer"
+    }
+  }
+}
