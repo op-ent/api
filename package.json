@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node ace serve --watch",
+    "dev": "yarn copy:env && node ace serve --watch",
+    "copy:env": "copy .env.local .env",
     "build": "node ace build --production",
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
@@ -46,6 +47,7 @@
     "@japa/preset-adonis": "^1.1.0",
     "@japa/runner": "^2.0.9",
     "adonis-preset-ts": "^2.1.0",
+    "copy": "^0.3.2",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-adonis": "^2.1.0",

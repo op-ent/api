@@ -41,13 +41,19 @@ Permet de gérer la base de données PostgreSQL.
 
 - URL : http://localhost:5050.
 - Identifiants :
-  - Email: `admin@admin.com`
+  - Email : `admin@admin.com`
   - Mot de passe : `password`
   - Mot de passe de la base de données : `lucid`
 
 #### RedisInsight
 
+Permet de gérer la base de données Redis.
+
 - URL : http://localhost:8001
+- Identifiants :
+  - Host : `redis-server`
+  - Port : `6379`
+  - Name : `redis`
 
 ## Licence
 
