@@ -20,8 +20,8 @@ export default class AuthController {
     const email = request.input('email')
     const password = request.input('password')
 
-    await auth.use('api').attempt(email, password)
+    const token = await auth.use('api').attempt(email, password)
 
-    return auth.isLoggedIn
+    return token
   }
 }

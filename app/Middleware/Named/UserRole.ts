@@ -8,7 +8,7 @@ export default class UserRole {
     roles: Role[]
   ) {
     const user = auth.user!
-    if (!roles.every((role) => user.role.includes(role))) {
+    if (!roles.every((role) => user.roles.includes(role))) {
       return response
         .status(401)
         .json({ error: `User must have the following roles: ${roles.join(', ')}` })

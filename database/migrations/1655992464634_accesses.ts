@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'app_consumers'
+  protected tableName = 'accesses'
 
   public async up() {
     this.schema.raw("CREATE TYPE access_type AS ENUM('token', 'web')")
