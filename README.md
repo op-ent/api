@@ -59,6 +59,17 @@ Permet de gérer la base de données Redis.
 
 Lors de la 1ère utilisation (`yarn migrate`), un utilisateur par défaut est créé, et avec lui un `access-id` et `access-token`. Pour toutes les requêtes à l'API, il est nécessaire de passer chacune de ces 2 données dans le header correspondant.
 
+## Routes
+
+```
+├── auth
+│   ├── login (POST)
+│   └── register (POST)
+├── developers
+│   └── accesses (GET, POST)
+│       └── :id (GET, PUT, DELETE)
+```
+
 ## Licence
 
 Publié sous la [licence GNU GPL v3](./LICENSE).
