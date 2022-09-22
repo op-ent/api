@@ -11,7 +11,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('email', 255).unique().notNullable()
       table.string('password', 180).notNullable()
       table.string('remember_me_token').nullable()
-      table.specificType('role', 'user_role[]').notNullable().defaultTo('{user}')
+      table.specificType('roles', 'user_role[]').notNullable().defaultTo('{user}')
       /**
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL
        */

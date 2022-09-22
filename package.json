@@ -13,7 +13,8 @@
     "docke:attach:redis": "docker exec -it redis /bin/sh",
     "docker:attach:postgres": "docker exec -it postgres /bin/sh",
     "docker:prod": "docker-compose -f docker-compose.production.yml up",
-    "docker:dev": "docker-compose -f docker-compose.development.yml --env-file .env.local up"
+    "docker:dev": "docker-compose -f docker-compose.development.yml --env-file .env.local up",
+    "migrate": "node ace migration:run && node ace db:seed"
   },
   "eslintConfig": {
     "extends": [

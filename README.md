@@ -30,7 +30,7 @@ Il n'y a pas besoin de toucher les fichiers d'environnements `.env.*`, `.env.loc
 
 Il faut exécuter 2 commandes en parallèle :
 
-- `yarn docker:dev` : lance les bases de données et interfaces d'administration
+- `yarn docker:dev` : lance les bases de données et interfaces d'administration. La 1ère fois, exécuter `yarn migrate` avant la commande suivante
 - `yarn dev` : lance l'API
 
 Vous avez accès à 2 consoles d'administration :

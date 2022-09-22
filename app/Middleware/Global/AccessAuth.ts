@@ -22,7 +22,6 @@ export default class AccessAuth {
     })
 
     const access = await Access.findByOrFail('access_id', accessId)
-    console.log("that's fine")
     if (access.type === 'token') {
       if (!accessToken) {
         throw new Error(
