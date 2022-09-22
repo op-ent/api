@@ -1,6 +1,14 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
+/*
+|--------------------------------------------------------------------------
+| AuthController
+|--------------------------------------------------------------------------
+|
+| This file is in charge of handling authentication requests.
+|
+*/
 export default class AuthController {
   public async register({ auth, request, response }: HttpContextContract) {
     const email = request.input('email')
