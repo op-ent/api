@@ -30,7 +30,7 @@ Il n'y a pas besoin de toucher les fichiers d'environnements `.env.*`, `.env.loc
 
 Il faut exécuter 2 commandes en parallèle :
 
-- `yarn docker:dev` : lance les bases de données et interfaces d'administration. La 1ère fois, exécuter `yarn migrate` avant la commande suivante
+- `yarn docker:dev` : lance les bases de données et interfaces d'administration. La 1ère fois, exécuter `yarn migrate` avant la commande suivante. Pensez à stocker quelque part les données qui apparaissent dans le terminal ! Cela vous évitera d'aller la chercher dans pgAdmin
 - `yarn dev` : lance l'API
 
 Vous avez accès à 2 consoles d'administration :
@@ -54,6 +54,10 @@ Permet de gérer la base de données Redis.
   - Host : `redis-server`
   - Port : `6379`
   - Name : `redis`
+
+### Utilisation
+
+Lors de la 1ère utilisation (`yarn migrate`), un utilisateur par défaut est créé, et avec lui un `access-id` et `access-token`. Pour toutes les requêtes à l'API, il est nécessaire de passer chacune de ces 2 données dans le header correspondant.
 
 ## Licence
 
