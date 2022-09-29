@@ -23,6 +23,9 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
   Route.post('register', 'AuthController.register')
   Route.post('login', 'AuthController.login')
+  Route.post('request-password-reset', 'AuthController.requestPasswordReset')
+  Route.post('is-reset-password-token-valid', 'AuthController.isResetPasswordTokenValid')
+  Route.post('reset-password', 'AuthController.resetPassword')
 }).prefix('/auth')
 
 Route.group(() => {
