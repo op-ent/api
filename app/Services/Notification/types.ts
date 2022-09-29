@@ -40,7 +40,7 @@ export interface StepEmailTemplate {
   contentType: 'customHtml'
   name: 'Email Message Template'
   subject: string
-  htmlContent: string
+  content: string
   variables: StepVariable[]
 }
 
@@ -55,7 +55,7 @@ export interface StepSmsTemplate {
 
 export interface NotificationTemplate {
   name: EventId
-  notificationGroupId: typeof DEFAULT_NOTIFICATIONS_GROUP_NAME
+  notificationGroupId: string
   tags: string[]
   description: string
   steps: {

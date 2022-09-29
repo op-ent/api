@@ -44,18 +44,15 @@ export const INTEGRATIONS: Integration[] = [
 export const NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
   {
     name: 'welcome',
-    notificationGroupId: DEFAULT_NOTIFICATIONS_GROUP_NAME,
+    notificationGroupId: null,
     description: 'Message sent when a user signs up',
-    tags: [],
     steps: [
       {
-        active: true,
         template: {
           type: 'email',
-          contentType: 'customHtml',
           name: 'Email Message Template',
           subject: 'Welcome to op-ent',
-          htmlContent: '<div>Welcome {{ name }}!</div>',
+          content: '<div>Welcome {{name}}!</div>',
           variables: [
             {
               type: 'String',
@@ -67,8 +64,6 @@ export const NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
         },
       },
     ],
-    active: true,
-    draft: false,
     critical: true,
     preferenceSettings: {
       sms: false,
@@ -78,4 +73,18 @@ export const NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
       push: false,
     },
   },
-]
+].map((template) => {
+  const o = {
+    ...template,
+    tags: [],
+    active: true,
+    draft: false,
+  }
+  for (const step of o.steps) {
+    step['active'] = true
+    if (step.template.type === 'email') {
+      step.template['contentType'] = 'customHtml'
+    }
+  }
+  return o
+}) as any

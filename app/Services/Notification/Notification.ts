@@ -1,7 +1,8 @@
-import { Novu, ITriggerPayload } from '@novu/node'
 import Env from '@ioc:Adonis/Core/Env'
-import User from 'App/Models/User'
+import Logger from '@ioc:Adonis/Core/Logger'
+import { Novu, ITriggerPayload } from '@novu/node'
 import axios from 'axios'
+import User from 'App/Models/User'
 import { NOVU_BACKEND_URL } from './config'
 import { setupNovu } from './setup-novu'
 import { EventId } from './types'
@@ -42,16 +43,16 @@ class NotificationService {
    * Boot the service and setup everything.
    */
   public async boot() {
-    console.log('Booting notification service...')
+    Logger.info('Booting notification service...')
     if (this.booted) {
-      console.log('Notification service already booted. Skipping...')
+      Logger.warn('Notification service already booted. Skipping...')
       return
     }
 
     this.booted = true
     this.novu = new Novu(this.apiKey)
     await setupNovu(this.axiosInstance)
-    console.log('Notification service booted.')
+    Logger.info('Notification service booted.')
   }
 
   /**
