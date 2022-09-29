@@ -1,5 +1,3 @@
-import { DEFAULT_NOTIFICATIONS_GROUP_NAME } from './config'
-
 export type EventId = 'welcome'
 
 export interface Integration {

@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import NotificationService from 'App/Services/Notification'
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ export default class AuthController {
     }
 
     const user = await User.create({ email, password })
+    NotificationService.subscribers.createSubscriber(user)
     const { token } = await auth.use('api').generate(user)
     return { user, token }
   }

@@ -6,6 +6,7 @@ import User from 'App/Models/User'
 import { NOVU_BACKEND_URL } from './config'
 import { setupNovu } from './setup-novu'
 import { EventId } from './types'
+import Subscribers from './Subscribers'
 
 /**
  * The NotificationService class is responsible for managing any notification logic
@@ -39,6 +40,8 @@ class NotificationService {
     },
   })
 
+  public subscribers: Subscribers
+
   /**
    * Boot the service and setup everything.
    */
@@ -52,6 +55,7 @@ class NotificationService {
     this.booted = true
     this.novu = new Novu(this.apiKey)
     await setupNovu(this.axiosInstance)
+    this.subscribers = new Subscribers(this.novu)
     Logger.info('Notification service booted.')
   }
 
@@ -72,8 +76,8 @@ class NotificationService {
   }
 
   public async sendWelcomeEmail(user: User) {
-    await this._trigger<{ hello: 'world' }>('welcome', user, {
-      hello: 'world',
+    await this._trigger<{ name: string }>('welcome', user, {
+      name: `Well we don't have your name but ${user.email}`,
     })
   }
 }
