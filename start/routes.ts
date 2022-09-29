@@ -30,3 +30,7 @@ Route.group(() => {
 })
   .prefix('/developers')
   .middleware(['auth', 'role:developer'])
+
+Route.group(() => {
+  Route.put('users/:id', 'UsersController.update')
+}).middleware('auth')
