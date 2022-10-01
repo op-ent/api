@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 import Access from 'App/Models/Access'
 
-export default class AccessAuth {
+export default class Gateway {
   public async handle({ request }: HttpContextContract, next: () => Promise<void>) {
     const accessId = request.header('access-id')
     const accessToken = request.header('access-token')
