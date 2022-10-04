@@ -20,7 +20,10 @@ export default class AccessAuth {
         required: 'You must provide an access_id header to access the api. Read more on ...',
       },
     })
-    const access = await Access.findOrFail(accessId)
+    const access = await Access.find(accessId)
+    if (!access) {
+      throw new Error('Invalid access_id')
+    }
     if (access.type === 'token') {
       if (!accessToken) {
         throw new Error(
