@@ -1,7 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
 import { AxiosInstance } from 'axios'
-import { DEFAULT_NOTIFICATIONS_GROUP_NAME, INTEGRATIONS, NOTIFICATION_TEMPLATES } from './config'
+import {
+  defaultNotificationsGroupName,
+  integrations,
+  notificationTemplates,
+} from 'Config/notifications'
 
 /**
  * Setup the integrations that are used by the application. Creates, updates and deletes any
@@ -22,7 +26,7 @@ async function _setupIntegrations(axiosInstance: AxiosInstance) {
     await axiosInstance.delete(`/integrations/${activeIntegration._id}`)
   }
 
-  for (const integration of INTEGRATIONS) {
+  for (const integration of integrations) {
     await axiosInstance.post('/integrations', integration)
   }
 
@@ -67,11 +71,11 @@ async function _setupNotificationGroups(axiosInstance: AxiosInstance) {
     }[]
   }>('/notification-groups')
 
-  if (notificationGroups.map((g) => g.name).includes(DEFAULT_NOTIFICATIONS_GROUP_NAME)) {
+  if (notificationGroups.map((g) => g.name).includes(defaultNotificationsGroupName)) {
     return
   }
   await axiosInstance.post('/notification-groups', {
-    name: DEFAULT_NOTIFICATIONS_GROUP_NAME,
+    name: defaultNotificationsGroupName,
   })
 }
 
@@ -103,10 +107,10 @@ async function _setupNotificationTemplates(axiosInstance: AxiosInstance) {
   }>('/notification-groups')
 
   const notificationGroupId = notificationGroups.find(
-    (g) => g.name === DEFAULT_NOTIFICATIONS_GROUP_NAME
+    (g) => g.name === defaultNotificationsGroupName
   )?._id!
 
-  for (const template of NOTIFICATION_TEMPLATES) {
+  for (const template of notificationTemplates) {
     await axiosInstance.post(
       '/notification-templates',
       { ...template, notificationGroupId },

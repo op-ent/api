@@ -3,9 +3,9 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import { Novu, ITriggerPayload } from '@novu/node'
 import axios from 'axios'
 import User from 'App/Models/User'
-import { NOVU_BACKEND_URL } from './config'
+import { novuBackendUrl } from 'Config/notifications'
 import { setupNovu } from './setup-novu'
-import { EventId } from './types'
+import type { EventId } from './types'
 import Subscribers from './Subscribers'
 
 /**
@@ -33,7 +33,7 @@ class NotificationService {
    * through the client.
    */
   private axiosInstance = axios.create({
-    baseURL: NOVU_BACKEND_URL,
+    baseURL: novuBackendUrl,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `ApiKey ${this.apiKey}`,

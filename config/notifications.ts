@@ -1,13 +1,13 @@
 import type { Integration, NotificationTemplate } from 'App/Services/Notification/types'
 
-export const DEFAULT_NOTIFICATIONS_GROUP_NAME = 'General'
+export const defaultNotificationsGroupName = 'General'
 
-export const NOVU_BACKEND_URL = 'https://api.novu.co/v1'
+export const novuBackendUrl = 'https://api.novu.co/v1'
 
 /**
  * The integrations that are used by the application.
  */
-export const INTEGRATIONS: Integration[] = [
+export const integrations: Integration[] = [
   {
     providerId: 'nodemailer',
     channel: 'email',
@@ -41,7 +41,7 @@ export const INTEGRATIONS: Integration[] = [
   },
 ]
 
-export const NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
+export const notificationTemplates: NotificationTemplate[] = [
   {
     name: 'welcome',
     notificationGroupId: null,
