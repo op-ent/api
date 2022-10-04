@@ -6,7 +6,7 @@ import { string } from '@ioc:Adonis/Core/Helpers'
 export default class AccessesController {
   private async _validateAccess({ auth, params }: HttpContextContract) {
     await validator.validate({
-      schema: schema.create({ id: schema.number() }),
+      schema: schema.create({ id: schema.string() }),
       data: {
         id: params.id,
       },
