@@ -1,3 +1,7 @@
-import Notification from './Notification'
+import NotificationService from './Notification'
+import Subscribers from './Subscribers'
 
-export default Notification
+export default NotificationService
+export { Subscribers }
+export * from './types'
+export * from './config'
