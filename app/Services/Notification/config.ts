@@ -1,4 +1,4 @@
-import { Integration, NotificationTemplate } from './types'
+import type { Integration, NotificationTemplate } from 'App/Services/Notification/types'
 
 export const DEFAULT_NOTIFICATIONS_GROUP_NAME = 'General'
 
