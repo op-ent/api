@@ -64,11 +64,22 @@ Lors de la 1ère utilisation (`yarn migrate`), un utilisateur par défaut est cr
 ```
 ├── auth
 │   ├── login (POST)
-│   └── register (POST)
+│   ├── register (POST)
+│   ├── request-password-reset (POST)
+│   ├── is-reset-password-token-valid (POST)
+│   └── reset-password (POST)
 ├── developers
 │   └── accesses (GET, POST)
 │       └── :id (GET, PUT, DELETE)
+├── users
+│   └── :id (PUT)
+├── swagger
+│   ├── docs (GET)
+│   └── swagger.yaml (GET)
+
 ```
+
+Only the `swagger` routes are not protected by the gateway.
 
 ## Licence
 
