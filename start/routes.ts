@@ -29,10 +29,14 @@ Route.group(() => {
   }).prefix('/auth')
 
   Route.group(() => {
-    Route.resource('accesses', 'AccessesController').apiOnly()
-  })
-    .prefix('/developers')
-    .middleware(['auth', 'role:developer'])
+    Route.put('users/:id', 'UsersController.update')
+
+    Route.group(() => {
+      Route.resource('accesses', 'AccessesController').apiOnly()
+    })
+      .prefix('/developers')
+      .middleware('role:developer')
+  }).middleware('auth')
 }).middleware('gateway')
 
 Route.group(() => {

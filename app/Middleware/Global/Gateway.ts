@@ -20,26 +20,24 @@ export default class Gateway {
         required: 'You must provide an access_id header to access the api. Read more on ...',
       },
     })
-    try {
-      const access = await Access.findByOrFail('access_id', accessId)
-      if (access.type === 'token') {
-        if (!accessToken) {
-          throw new Error(
-            'You must provide an access_token header to access the api. Read more on ...'
-          )
-        } else if (access.token !== accessToken) {
-          throw new Error('Invalid access token')
-        }
-      } else {
-        const origin = request.header('origin')
-        if (!origin || !access.domains!.includes(origin)) {
-          throw new Error('Access denied from this domain')
-        }
-      }
-
-      await next()
-    } catch (e) {
-      throw new Error('access-id not found')
+    const access = await Access.find(accessId)
+    if (!access) {
+      throw new Error('Invalid access_id')
     }
+    if (access.type === 'token') {
+      if (!accessToken) {
+        throw new Error(
+          'You must provide an access_token header to access the api. Read more on ...'
+        )
+      } else if (access.token !== accessToken) {
+        throw new Error('Invalid access token')
+      }
+    } else {
+      const origin = request.header('origin')
+      if (!origin || !access.domains!.includes(origin)) {
+        throw new Error('Access denied from this domain')
+      }
+    }
+    await next()
   }
 }

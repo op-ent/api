@@ -1,4 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import NotificationService from 'App/Services/Notification'
 
 export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
@@ -9,6 +10,7 @@ export default class AppProvider {
 
   public async boot() {
     // IoC container is ready
+    await NotificationService.boot()
   }
 
   public async ready() {
