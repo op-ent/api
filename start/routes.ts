@@ -19,18 +19,27 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import AutoSwagger from 'adonis-autoswagger'
+import swagger from 'Config/swagger'
 
 Route.group(() => {
-  Route.post('register', 'AuthController.register')
-  Route.post('login', 'AuthController.login')
-}).prefix('/auth')
+  Route.group(() => {
+    Route.post('register', 'AuthController.register')
+    Route.post('login', 'AuthController.login')
+  }).prefix('/auth')
+
+  Route.group(() => {
+    Route.put('users/:id', 'UsersController.update')
+
+    Route.group(() => {
+      Route.resource('accesses', 'AccessesController').apiOnly()
+    })
+      .prefix('/developers')
+      .middleware('role:developer')
+  }).middleware('auth')
+}).middleware('gateway')
 
 Route.group(() => {
-  Route.resource('accesses', 'AccessesController').apiOnly()
-})
-  .prefix('/developers')
-  .middleware(['auth', 'role:developer'])
-
-Route.group(() => {
-  Route.put('users/:id', 'UsersController.update')
-}).middleware('auth')
+  Route.get('/swagger.yaml', async () => AutoSwagger.docs(Route.toJSON(), swagger as any))
+  Route.get('/docs', async () => AutoSwagger.ui('/swagger/swagger.yaml'))
+}).prefix('/swagger')
