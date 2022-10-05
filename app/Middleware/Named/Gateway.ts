@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 import Access from 'App/Models/Access'
 
-export default class AccessAuth {
+export default class Gateway {
   public async handle({ request }: HttpContextContract, next: () => Promise<void>) {
     const accessId = request.header('access-id')
     const accessToken = request.header('access-token')
@@ -20,7 +20,10 @@ export default class AccessAuth {
         required: 'You must provide an access_id header to access the api. Read more on ...',
       },
     })
-    const access = await Access.findByOrFail('access_id', accessId)
+    const access = await Access.find(accessId)
+    if (!access) {
+      throw new Error('Invalid access_id')
+    }
     if (access.type === 'token') {
       if (!accessToken) {
         throw new Error(

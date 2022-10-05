@@ -19,17 +19,30 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import AutoSwagger from 'adonis-autoswagger'
+import swagger from 'Config/swagger'
 
 Route.group(() => {
-  Route.post('register', 'AuthController.register')
-  Route.post('login', 'AuthController.login')
-  Route.post('request-password-reset', 'AuthController.requestPasswordReset')
-  Route.post('is-reset-password-token-valid', 'AuthController.isResetPasswordTokenValid')
-  Route.post('reset-password', 'AuthController.resetPassword')
-}).prefix('/auth')
+  Route.group(() => {
+    Route.post('register', 'AuthController.register')
+    Route.post('login', 'AuthController.login')
+    Route.post('request-password-reset', 'AuthController.requestPasswordReset')
+    Route.post('is-reset-password-token-valid', 'AuthController.isResetPasswordTokenValid')
+    Route.post('reset-password', 'AuthController.resetPassword')
+  }).prefix('/auth')
+
+  Route.group(() => {
+    Route.put('users/:id', 'UsersController.update')
+
+    Route.group(() => {
+      Route.resource('accesses', 'AccessesController').apiOnly()
+    })
+      .prefix('/developers')
+      .middleware('role:developer')
+  }).middleware('auth')
+}).middleware('gateway')
 
 Route.group(() => {
-  Route.resource('accesses', 'AccessesController').apiOnly()
-})
-  .prefix('/developers')
-  .middleware(['auth', 'role:developer'])
+  Route.get('/swagger.yaml', async () => AutoSwagger.docs(Route.toJSON(), swagger as any))
+  Route.get('/docs', async () => AutoSwagger.ui('/swagger/swagger.yaml'))
+}).prefix('/swagger')

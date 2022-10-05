@@ -7,16 +7,13 @@ export type AccessType = 'token' | 'web'
 
 export default class Access extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public user_id: number
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
-
-  @column()
-  public access_id: string
 
   @column()
   public type: AccessType
