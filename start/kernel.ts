@@ -44,5 +44,5 @@ Server.middleware.register([
 Server.middleware.registerNamed({
   auth: () => import('App/Middleware/Named/Auth'),
   role: () => import('App/Middleware/Named/UserRole'),
-  gateway: () => import('App/Middleware/Global/Gateway'),
+  gateway: () => import('App/Middleware/Named/Gateway'),
 })
