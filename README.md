@@ -54,6 +54,10 @@ Permet de gérer la base de données Redis.
   - Host : `redis-server`
   - Port : `6379`
   - Name : `redis`
+  
+### Persistance & reset
+
+Toutes les données stockées dans les bases de données presistent d'une utilisation à l'autre. Pour les reset, il faut passer par Docker Desktop directement, supprimer les containers puis les volumes associés.
 
 ### Utilisation
 
