@@ -5,7 +5,7 @@
   "scripts": {
     "ace": "cross-env ENV_PATH=.env.local node ace",
     "dev": " yarn ace serve --watch",
-    "build": "yarn ace build --production",
+    "build": "node ace build --production",
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
