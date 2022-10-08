@@ -22,9 +22,8 @@ Il s'agit de l'API pour le projet op-ent. Il s'agit d'une API REST et GraphQL qu
 
 ### Installation & configuration
 
-Exécuter `yarn` pour installer les dépendances.
-
-Il n'y a pas besoin de toucher les fichiers d'environnements `.env.*`, `.env.local` est déjà configuré pour le développement.
+- Exécuter `yarn` pour installer les dépendances.
+- Copier le fichier `.env.example` et le renommer en `.env.local`. Il n'y a pas besoin de modifier les variables d'environnement.
 
 ### Lancement
 
@@ -54,7 +53,7 @@ Permet de gérer la base de données Redis.
   - Host : `redis-server`
   - Port : `6379`
   - Name : `redis`
-  
+
 ### Persistance & reset
 
 Toutes les données stockées dans les bases de données presistent d'une utilisation à l'autre. Pour les reset, il faut passer par Docker Desktop directement, supprimer les containers puis les volumes associés.
@@ -62,6 +61,14 @@ Toutes les données stockées dans les bases de données presistent d'une utilis
 ### Utilisation
 
 Lors de la 1ère utilisation (`yarn migrate`), un utilisateur par défaut est créé, et avec lui un `access-id` et `access-token`. Pour toutes les requêtes à l'API, il est nécessaire de passer chacune de ces 2 données dans le header correspondant.
+
+### Ace CLI
+
+Adonis propose un CLI utilisable via `node ace`. Cependant, il faut utiliser `yarn ace` à la place en développement. Cela permet d'utiliser automatiquement les variables d'environnement du fichier `.env.local`.
+
+### Notifications
+
+Nous utilisons [Novu](https://novu.co). Pour le moment, il n'est pas possible d'envoyer des notifications en développement. Pour setup novu, il faut exécuter `yarn ace novu:setup` et suivre les instructions.
 
 ## Routes
 
