@@ -1,10 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
-import { AxiosInstance } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import {
   defaultNotificationsGroupName,
   integrations,
   notificationTemplates,
+  novuBackendUrl,
 } from 'Config/notifications'
 
 /**
@@ -123,7 +124,14 @@ async function _setupNotificationTemplates(axiosInstance: AxiosInstance) {
   }
 }
 
-export async function setupNovu(axiosInstance: AxiosInstance) {
+export async function setupNovu() {
+  const axiosInstance = axios.create({
+    baseURL: novuBackendUrl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `ApiKey ${Env.get('NOVU_API_KEY')}`,
+    },
+  })
   await _setupIntegrations(axiosInstance)
   await _setupNotificationGroups(axiosInstance)
   await _setupNotificationTemplates(axiosInstance)

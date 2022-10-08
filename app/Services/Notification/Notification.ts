@@ -1,10 +1,7 @@
 import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
 import { Novu, ITriggerPayload } from '@novu/node'
-import axios from 'axios'
 import User from 'App/Models/User'
-import { novuBackendUrl } from 'Config/notifications'
-import { setupNovu } from './setup-novu'
 import type { EventId } from './types'
 import Subscribers from './Subscribers'
 
@@ -26,19 +23,7 @@ class NotificationService {
   /**
    * The {@link this.novu} API key.
    */
-  private apiKey = Env.get('NOVU_API_KEY')
-
-  /**
-   * The axios client to interact with the {@link novu} API that is not accesible
-   * through the client.
-   */
-  private axiosInstance = axios.create({
-    baseURL: novuBackendUrl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `ApiKey ${this.apiKey}`,
-    },
-  })
+  private apiKey = Env.get('NOVU_API_KEY', '')
 
   public subscribers: Subscribers
 
@@ -54,7 +39,6 @@ class NotificationService {
 
     this.booted = true
     this.novu = new Novu(this.apiKey)
-    await setupNovu(this.axiosInstance)
     this.subscribers = new Subscribers(this.novu)
     Logger.info('Notification service booted.')
   }
@@ -67,6 +51,10 @@ class NotificationService {
     user: User,
     payload: ITriggerPayload & T
   ) {
+    if (this.apiKey === '') {
+      Logger.warn('NOVU_API_KEY not set. Skipping notification...')
+      return
+    }
     return await this.novu.trigger(eventId, {
       to: {
         subscriberId: user.id.toString(),
