@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "yarn copy:env && node ace serve --watch",
-    "copy:env": "copy .env.local .env",
+    "ace": "cross-env ENV_PATH=.env.local node ace",
+    "dev": " yarn ace serve --watch",
     "build": "node ace build --production",
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
@@ -14,7 +14,7 @@
     "docker:attach:postgres": "docker exec -it postgres /bin/sh",
     "docker:prod": "docker-compose -f docker-compose.production.yml up",
     "docker:dev": "docker-compose -f docker-compose.development.yml --env-file .env.local up",
-    "migrate": "node ace migration:run && node ace db:seed"
+    "migrate": "yarn ace migration:run && yarn ace db:seed"
   },
   "eslintConfig": {
     "extends": [
@@ -51,7 +51,7 @@
     "@japa/preset-adonis": "^1.1.0",
     "@japa/runner": "^2.0.9",
     "adonis-preset-ts": "^2.1.0",
-    "copy": "^0.3.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-adonis": "^2.1.0",
@@ -68,8 +68,8 @@
     "@adonisjs/lucid": "^18.1.0",
     "@adonisjs/redis": "^7.3.1",
     "@adonisjs/repl": "^3.1.0",
-    "adonis-autoswagger": "^1.7.8",
     "@novu/node": "^0.8.0",
+    "adonis-autoswagger": "^1.7.8",
     "axios": "^0.27.2",
     "defu": "^6.1.0",
     "luxon": "^2.4.0",

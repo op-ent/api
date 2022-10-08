@@ -32,6 +32,6 @@ export default Env.rules({
   REDIS_PASSWORD: Env.schema.string.optional(),
   DEFAULT_ADMIN_EMAIL: Env.schema.string({ format: 'email' }),
   DEFAULT_ADMIN_PASSWORD: Env.schema.string(),
-  NOVU_API_KEY: Env.schema.string(),
-  NOVU_PERSONAL_TOKEN: Env.schema.string(),
+  NOVU_API_KEY: Env.schema.string.optional(),
+  NOVU_PERSONAL_TOKEN: Env.schema.string.optional(),
 })

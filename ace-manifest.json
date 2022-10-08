@@ -12,6 +12,18 @@
       "aliases": [],
       "flags": []
     },
+    "novu:setup": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/NovuSetup",
+      "commandName": "novu:setup",
+      "description": "Sets up the novu settings (integrations, templates...)",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

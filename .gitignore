@@ -3,5 +3,6 @@ build
 coverage
 .vscode
 .DS_STORE
+.env.local
 .env
 tmp
