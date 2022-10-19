@@ -1,10 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
-import { AxiosInstance } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import {
   defaultNotificationsGroupName,
   integrations,
   notificationTemplates,
+  novuBackendUrl,
 } from 'Config/notifications'
 
 /**
@@ -29,35 +30,6 @@ async function _setupIntegrations(axiosInstance: AxiosInstance) {
   for (const integration of integrations) {
     await axiosInstance.post('/integrations', integration)
   }
-
-  // TODO: wait for Discord response
-  // for (const integration of INTEGRATIONS) {
-  //   const activeIntegration = activeIntegrations.find(
-  // (i) => i.providerId === integration.providerId && i.channel === integration.channel
-  //   )
-
-  //   const alreadyExists = !!activeIntegration
-
-  //   if (alreadyExists) {
-  // await axiosInstance.put(`/integrations/${activeIntegration._id}`, {
-  //   credentials: integration.credentials,
-  //   active: integration.active,
-  // })
-  //   } else {
-  // await axiosInstance.post('/integrations', integration)
-  //   }
-  // }
-
-  // const unusedIntegrations = activeIntegrations.filter((i) => {
-  //   return INTEGRATIONS.find(
-  //     (integration) =>
-  //       integration.providerId === i.providerId && integration.channel === i.channel
-  //   )
-  // })
-
-  // for (const unusedIntegration of unusedIntegrations) {
-  //   await axiosInstance.delete(`/integrations/${unusedIntegration._id}`)
-  // }
 }
 
 async function _setupNotificationGroups(axiosInstance: AxiosInstance) {
@@ -123,7 +95,14 @@ async function _setupNotificationTemplates(axiosInstance: AxiosInstance) {
   }
 }
 
-export async function setupNovu(axiosInstance: AxiosInstance) {
+export async function setupNovu() {
+  const axiosInstance = axios.create({
+    baseURL: novuBackendUrl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `ApiKey ${Env.get('NOVU_API_KEY')}`,
+    },
+  })
   await _setupIntegrations(axiosInstance)
   await _setupNotificationGroups(axiosInstance)
   await _setupNotificationTemplates(axiosInstance)
