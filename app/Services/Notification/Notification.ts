@@ -26,6 +26,7 @@ class NotificationService {
   private apiKey = Env.get('NOVU_API_KEY', '')
 
   public subscribers: Subscribers
+  private debug: boolean
 
   /**
    * Boot the service and setup everything.
@@ -38,8 +39,9 @@ class NotificationService {
     }
 
     this.booted = true
+    this.debug = this.apiKey === ''
     this.novu = new Novu(this.apiKey)
-    this.subscribers = new Subscribers(this.novu)
+    this.subscribers = new Subscribers(this.novu, this.debug)
     Logger.info('Notification service booted.')
   }
 
@@ -51,7 +53,7 @@ class NotificationService {
     user: User,
     payload: ITriggerPayload & T
   ) {
-    if (this.apiKey === '') {
+    if (this.debug) {
       Logger.warn('NOVU_API_KEY not set. Skipping notification...')
       return
     }
