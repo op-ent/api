@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Route from '@ioc:Adonis/Core/Route'
 import User from 'App/Models/User'
 import NotificationService from 'App/Services/Notification'
 import { string } from '@ioc:Adonis/Core/Helpers'
@@ -49,14 +50,22 @@ export default class AuthController {
   |
   */
   public async login({ auth, request }: HttpContextContract) {
-    const { email, password } = await request.validate({
+    const { email, password, grantDeveloperAccess } = await request.validate({
       schema: schema.create({
         email: schema.string({ trim: true }, [rules.email()]),
         password: schema.string({ trim: true }),
+        grantDeveloperAccess: schema.boolean.optional(),
       }),
     })
 
     const token = await auth.use('api').attempt(email, password)
+    // When logging in to the dev portal, grantDeveloperAccess adds the developer role to the user.
+    // Used for analytics and regulation only.
+    const user = await User.findBy('email', email)
+    if (grantDeveloperAccess && !user!.roles.includes('developer')) {
+      user!.roles.push('developer')
+      await user?.save()
+    }
 
     return token
   }
@@ -71,9 +80,20 @@ export default class AuthController {
   |
   */
   public async requestPasswordReset({ request }: HttpContextContract) {
-    const email = request.input('email')
+    const { email } = await request.validate({
+      schema: schema.create({
+        email: schema.string({ trim: true }, [rules.email()]),
+      }),
+    })
 
     const user = await User.findByOrFail('email', email)
+
+    // TODO: check if it's the right route. Maybe we can let customize the URL to match any frontend structure. Maybe.
+    const route = Route.makeSignedUrl('/auth/reset-password', { email }, { expiresIn: '60m' })
+
+    console.log(route)
+
+    // TODO: get rid of this
     const token = string.generateRandom(64)
     user.resetPasswordToken = token
     await user.save()
@@ -82,6 +102,7 @@ export default class AuthController {
     // https://app.op-ent.fr/auth/reset-password?token=${token}
   }
 
+  // TODO: check if really necessary
   /*
   |--------------------------------------------------------------------------
   | Is reset password token valid
