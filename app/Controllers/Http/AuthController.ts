@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Route from '@ioc:Adonis/Core/Route'
 import User from 'App/Models/User'
 import NotificationService from 'App/Services/Notification'
 import { string } from '@ioc:Adonis/Core/Helpers'
@@ -88,12 +87,6 @@ export default class AuthController {
 
     const user = await User.findByOrFail('email', email)
 
-    // TODO: check if it's the right route. Maybe we can let customize the URL to match any frontend structure. Maybe.
-    const route = Route.makeSignedUrl('/auth/reset-password', { email }, { expiresIn: '60m' })
-
-    console.log(route)
-
-    // TODO: get rid of this
     const token = string.generateRandom(64)
     user.resetPasswordToken = token
     await user.save()
@@ -102,7 +95,6 @@ export default class AuthController {
     // https://app.op-ent.fr/auth/reset-password?token=${token}
   }
 
-  // TODO: check if really necessary
   /*
   |--------------------------------------------------------------------------
   | Is reset password token valid
@@ -113,10 +105,13 @@ export default class AuthController {
   |
   */
   public async isResetPasswordTokenValid({ request }: HttpContextContract) {
-    const token = request.input('token')
+    const { token } = await request.validate({
+      schema: schema.create({
+        token: schema.string([rules.length(64)]),
+      }),
+    })
 
     const user = await User.findByOrFail('resetPasswordToken', token)
-
     return { valid: !!user }
   }
 
@@ -129,8 +124,12 @@ export default class AuthController {
   |
   */
   public async resetPassword({ request }: HttpContextContract) {
-    const token = request.input('token')
-    const password = request.input('password')
+    const { token, password } = await request.validate({
+      schema: schema.create({
+        password: schema.string({ trim: true }, [rules.confirmed('passwordConfirmation')]),
+        token: schema.string([rules.length(64)]),
+      }),
+    })
 
     const user = await User.findByOrFail('resetPasswordToken', token)
     user.password = password
