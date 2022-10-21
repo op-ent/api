@@ -1,7 +1,18 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  column,
+  beforeSave,
+  BaseModel,
+  hasMany,
+  HasMany,
+  hasOne,
+  HasOne,
+} from '@ioc:Adonis/Lucid/Orm'
 import Access from 'App/Models/Access'
+import Member from './Member'
+import { enumColumn } from 'App/Helpers/ModelEnum'
+import UserDetail from './UserDetail'
 
 export type UserRole = 'admin' | 'user' | 'developer'
 
@@ -24,14 +35,17 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @column({
-    prepare: (value: string[]): string => `{${value.join(',')}}`,
-    consume: (value: string): string[] => value.slice(1, -1).split(','),
-  })
+  @enumColumn()
   public roles: UserRole[]
 
   @hasMany(() => Access, { foreignKey: 'user_id' })
   public accesses: HasMany<typeof Access>
+
+  @hasMany(() => Member, { foreignKey: 'user_id' })
+  public members: HasMany<typeof Member>
+
+  @hasOne(() => UserDetail, { foreignKey: 'user_id' })
+  public detail: HasOne<typeof UserDetail>
 
   @beforeSave()
   public static async hashPassword(user: User) {
