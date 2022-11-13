@@ -111,7 +111,7 @@ export default class AuthController {
       }),
     })
 
-    const user = await User.findByOrFail('resetPasswordToken', token)
+    const user = await User.findBy('resetPasswordToken', token)
     return { valid: !!user }
   }
 
