@@ -131,7 +131,8 @@ export default class AuthController {
       }),
     })
 
-    const user = await User.findByOrFail('resetPasswordToken', token)
+    const user = await User.findBy('resetPasswordToken', token)
+    if (!user) return response.unauthorized('Invalid token')
     user.password = password
     delete user.resetPasswordToken
     await user.save()
