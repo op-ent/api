@@ -33,6 +33,9 @@ export default class User extends BaseModel {
   @hasMany(() => Access, { foreignKey: 'user_id' })
   public accesses: HasMany<typeof Access>
 
+  @column()
+  public resetPasswordToken?: string
+
   @beforeSave()
   public static async hashPassword(user: User) {
     if (user.$dirty.password) {
