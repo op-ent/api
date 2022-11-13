@@ -133,7 +133,7 @@ export default class AuthController {
 
     const user = await User.findByOrFail('resetPasswordToken', token)
     user.password = password
-    user.resetPasswordToken = undefined
+    delete user.resetPasswordToken
     await user.save()
   }
 }
